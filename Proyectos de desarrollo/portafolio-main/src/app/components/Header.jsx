@@ -1,69 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
-import { Menu, X } from "lucide-react"; // Iconos para el menú móvil
+import React, { useState, useEffect } from "react";
+import { Globe } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { language, toggleLanguage } = useLanguage();
 
-  // Lista de enlaces para no repetir código
-  const navItems = [
-    { name: "Inicio", href: "#home" },
-    { name: "Trayectoria", href: "#experience" },
-    { name: "Proyectos", href: "#projects" },
-    { name: "Contacto", href: "#contact" },
-  ];
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/10">
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* LOGO / NOMBRE */}
+    <header
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? "bg-black/80 backdrop-blur-md py-4" : "bg-transparent py-6"}`}
+    >
+      <div className="container mx-auto px-6 lg:px-20 flex justify-between items-center">
+        {/* LOGO */}
         <a
-          href="#home"
-          className="text-2xl font-bold bg-gradient-to-r from-violet-400 via-fuchsia-400 to-white bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+          href="#"
+          className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
         >
-          Josué<span className="text-fuchsia-500">.</span>dev
+          JA.
         </a>
 
-        {/* MENÚ DE ESCRITORIO (PC) */}
-        <div className="hidden md:flex space-x-8">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-slate-300 hover:text-fuchsia-400 font-medium transition-colors text-sm uppercase tracking-wider relative group"
-            >
-              {item.name}
-              {/* Línea animada al hacer hover */}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-fuchsia-500 transition-all group-hover:w-full"></span>
-            </a>
-          ))}
-        </div>
-
-        {/* BOTÓN MENÚ MÓVIL (CELULAR) */}
+        {/* ÚNICO ELEMENTO: BOTÓN DE IDIOMA */}
         <button
-          className="md:hidden text-slate-300 hover:text-white focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={toggleLanguage}
+          className="flex items-center gap-2 px-4 py-2 rounded-full border border-slate-700 bg-slate-800/50 text-slate-300 hover:border-violet-500 hover:text-white transition-all text-xs font-bold cursor-pointer backdrop-blur-sm shadow-lg"
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          <Globe size={16} />
+          {language === "es" ? "EN" : "ES"}
         </button>
-      </nav>
-
-      {/* MENÚ DESPLEGABLE (MÓVIL) */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-black/95 border-b border-white/10 p-4 flex flex-col gap-4 shadow-2xl">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={() => setIsOpen(false)} // Cierra el menú al dar clic
-              className="text-slate-300 hover:text-fuchsia-400 hover:bg-white/5 px-4 py-3 rounded-lg transition-all text-center font-medium"
-            >
-              {item.name}
-            </a>
-          ))}
-        </div>
-      )}
+      </div>
     </header>
   );
 };

@@ -3,25 +3,28 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Code2 } from "lucide-react";
+import { useLanguage } from "../../context/LanguageContext";
 
 const Skills = () => {
+  const { t } = useLanguage();
+
   const skillsData = [
     {
       name: "React",
       desc: "Modern UI Library",
-      img: "/images/react.png", // ¡Descarga este logo y guárdalo!
+      img: "/images/react.png",
       url: "https://react.dev/",
     },
     {
       name: "Node.js",
       desc: "JavaScript Runtime",
-      img: "/images/node.png", // ¡Descarga este logo y guárdalo!
+      img: "/images/node.png",
       url: "https://nodejs.org/",
     },
     {
       name: "TypeScript",
       desc: "Typed JavaScript",
-      img: "/images/typescript.png", // ¡Descarga este logo y guárdalo!
+      img: "/images/typescript.png",
       url: "https://www.typescriptlang.org/",
     },
     {
@@ -37,9 +40,9 @@ const Skills = () => {
       url: "https://www.microsoft.com/en-us/sql-server",
     },
     {
-      name: "C#",
-      desc: ".NET Development",
-      img: "/images/c.png",
+      name: "C# / .NET",
+      desc: "Backend Development",
+      img: "/images/c.png", // Asegúrate de tener c.png o usa una genérica
       url: "https://learn.microsoft.com/en-us/dotnet/csharp/",
     },
     {
@@ -83,7 +86,7 @@ const Skills = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-violet-900/10 rounded-[100%] blur-[120px] pointer-events-none"></div>
 
       <div className="container mx-auto px-6 lg:px-24 relative z-10">
-        {/* Título */}
+        {/* Título (Conectado a Traducciones) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -95,11 +98,12 @@ const Skills = () => {
             <div className="bg-slate-900 border border-slate-800 p-2 rounded-lg shadow-lg shadow-violet-500/10">
               <Code2 className="text-fuchsia-500 w-6 h-6" />
             </div>
-            <h2 className="text-4xl font-bold text-white">Tech Stack</h2>
+            <h2 className="text-4xl font-bold text-white">
+              {t.skills.title} {/* Usando traducción */}
+            </h2>
           </div>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto md:mx-0">
-            Tecnologías y herramientas clave que utilizo para construir
-            soluciones escalables.
+            {t.skills.subtitle} {/* Usando traducción */}
           </p>
         </motion.div>
 
@@ -121,7 +125,7 @@ const Skills = () => {
               whileHover={{
                 scale: 1.05,
                 backgroundColor: "rgba(15, 23, 42, 1)",
-                borderColor: "rgba(167, 139, 250, 0.5)", // Borde violeta al hover
+                borderColor: "rgba(167, 139, 250, 0.5)",
               }}
               className="group relative flex flex-col items-center p-6 bg-[#0B1120] rounded-2xl border border-slate-800 transition-all cursor-pointer shadow-lg hover:shadow-violet-900/20"
             >
@@ -130,7 +134,6 @@ const Skills = () => {
                 <img
                   src={skill.img}
                   alt={`${skill.name} logo`}
-                  // Placeholder por si no encuentra la imagen
                   onError={(e) => {
                     e.target.style.display = "none";
                   }}
